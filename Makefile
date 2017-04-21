@@ -87,10 +87,15 @@ api: api-get-apigen
 	rm -rf build/artifacts/docs
 	php build/artifacts/apigen.phar generate --config build/docs/apigen.neon --debug
 	make api-models
+	make redirect-map
 
 api-models:
 	# Build custom docs
 	php build/docs.php
+
+redirect-map:
+	# Build redirect map
+	php build/build-redirect-map.php
 
 api-show:
 	open build/artifacts/docs/index.html
@@ -131,7 +136,7 @@ check-tag:
 tag: check-tag
 	@echo Tagging $(TAG)
 	chag update $(TAG)
-	sed -i '' -e "s/VERSION = '.*'/VERSION = '$(TAG)'/" src/Sdk.php
+	sed -i'' -e "s/VERSION = '.*'/VERSION = '$(TAG)'/" src/Sdk.php
 	php -l src/Sdk.php
 	git commit -a -m '$(TAG) release'
 	chag tag

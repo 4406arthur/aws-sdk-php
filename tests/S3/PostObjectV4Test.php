@@ -92,6 +92,50 @@ class PostObjectV4Test extends \PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('X-Amz-Signature-Token', $a);
     }
 
+    public function testSignsPostPolicyWithFalseSecurityToken()
+    {
+        $client = new S3Client([
+            'version' => 'latest',
+            'region' => 'us-east-1',
+            'credentials' => [
+                'key' => 'AKIAIOSFODNN7EXAMPLE',
+                'secret' => 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+                'token' => false
+            ],
+        ]);
+        $p = new PostObjectV4(
+            $client,
+            'sigv4examplebucket',
+            [],
+            [],
+            "2015-12-29T01:00:00Z"
+        );
+        $a = $p->getFormInputs();
+        $this->assertArrayNotHasKey('X-Amz-Security-Token', $a);
+    }
+
+    public function testSignsPostPolicyWithNullSecurityToken()
+    {
+        $client = new S3Client([
+            'version' => 'latest',
+            'region' => 'us-east-1',
+            'credentials' => [
+                'key' => 'AKIAIOSFODNN7EXAMPLE',
+                'secret' => 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+                'token' => NULL
+            ],
+        ]);
+        $p = new PostObjectV4(
+            $client,
+            'sigv4examplebucket',
+            [],
+            [],
+            "2015-12-29T01:00:00Z"
+        );
+        $a = $p->getFormInputs();
+        $this->assertArrayNotHasKey('X-Amz-Security-Token', $a);
+    }
+
     /**
      * Executes the SigV4 POST example from the S3 documentation.
      *
@@ -189,5 +233,40 @@ class PostObjectV4Test extends \PHPUnit_Framework_TestCase
             'https://s3.amazonaws.com/foo.bar',
             $formAttrs['action']
         );
+    }
+
+    /**
+     * @dataProvider virtualStyleProvider
+     *
+     * @param string $endpoint
+     * @param string $bucket
+     * @param string $expected
+     */
+    public function testCanHandleVirtualStyleEndpoint($endpoint, $bucket, $expected)
+    {
+        $s3 = new S3Client([
+            'version' => 'latest',
+            'region' => 'us-east-1',
+            'credentials' => [
+                'key' => 'akid',
+                'secret' => 'secret',
+            ],
+            'endpoint' => $endpoint,
+            'bucket_endpoint' => true,
+        ]);
+        $postObject = new PostObjectV4($s3, $bucket, []);
+        $formAttrs = $postObject->getFormAttributes();
+        $this->assertEquals($expected, $formAttrs['action']);
+    }
+
+    public function virtualStyleProvider()
+    {
+        return [
+            ['http://foo.s3.amazonaws.com', 'foo', 'http://foo.s3.amazonaws.com'],
+            ['http://foo.s3.amazonaws.com', 'bar', 'http://bar.foo.s3.amazonaws.com'],
+            ['http://s3.amazonaws.com', 'amazonaws', 'http://amazonaws.s3.amazonaws.com'],
+            ['http://foo.bar.s3.amazonaws.com', 'foo.bar', 'http://foo.bar.s3.amazonaws.com'],
+            ['http://foo.com', 'foo.com', 'http://foo.com.foo.com'],
+        ];
     }
 }
