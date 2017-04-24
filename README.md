@@ -10,7 +10,7 @@
 ##Diff
 for some endpoint not supported Signature-v4 yet.
 Signature-v2.[method](http://docs.aws.amazon.com/general/latest/gr/signature-version-2.html)
-
+also support GCS
 
 
 ##title
