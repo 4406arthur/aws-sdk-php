@@ -28,6 +28,13 @@
             "2016-12-01": "2016-12-01"
         }
     },
+    "athena": {
+        "namespace": "Athena",
+        "versions": {
+            "latest": "2017-05-18",
+            "2017-05-18": "2017-05-18"
+        }
+    },
     "autoscaling": {
         "namespace": "AutoScaling",
         "versions": {
@@ -317,6 +324,13 @@
             "2010-12-01": "2010-12-01"
         }
     },
+    "entitlement.marketplace": {
+        "namespace": "MarketplaceEntitlementService",
+        "versions": {
+            "latest": "2017-01-11",
+            "2017-01-11": "2017-01-11"
+        }
+    },
     "es": {
         "namespace": "ElasticsearchService",
         "versions": {
@@ -351,6 +365,13 @@
         "versions": {
             "latest": "2012-06-01",
             "2012-06-01": "2012-06-01"
+        }
+    },
+    "greengrass": {
+        "namespace": "Greengrass",
+        "versions": {
+            "latest": "2017-06-07",
+            "2017-06-07": "2017-06-07"
         }
     },
     "health": {

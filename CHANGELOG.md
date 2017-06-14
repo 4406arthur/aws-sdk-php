@@ -1,5 +1,145 @@
 # CHANGELOG
 
+## 3.29.4 - 2017-06-13
+
+* `Aws\ConfigService` - With this release AWS Config supports the Amazon CloudWatch alarm resource type.
+
+## 3.29.3 - 2017-06-12
+
+* `Aws\RDS` - API Update for RDS: this update enables copy-on-write, a new Aurora MySQL Compatible Edition feature that allows users to restore their database, and support copy of TDE enabled snapshot cross region.
+
+## 3.29.2 - 2017-06-09
+
+* `Aws\OpsWorks` - Tagging Support for AWS OpsWorks Stacks
+
+## 3.29.1 - 2017-06-08
+
+* `Aws\IoT` - In addition to using certificate ID, AWS IoT customers can now obtain the description of a certificate with the certificate PEM.
+* `Aws\Pinpoint` - Starting today Amazon Pinpoint adds SMS Text and Email Messaging support in addition to Mobile Push Notifications, providing developers, product managers and marketers with multi-channel messaging capabilities to drive user engagement in their applications. Pinpoint also enables backend services and applications to message users directly and provides advanced user and app analytics to understand user behavior and messaging performance.
+* `Aws\Rekognition` - API Update for AmazonRekognition: Adding RecognizeCelebrities API
+
+## 3.29.0 - 2017-06-07
+
+* `Aws\CodeBuild` - Add support to APIs for privileged containers. This change would allow performing privileged operations like starting the Docker daemon inside builds possible in custom docker images.
+* `Aws\Greengrass` - AWS Greengrass is software that lets you run local compute, messaging, and device state synchronization for connected devices in a secure way. With AWS Greengrass, connected devices can run AWS Lambda functions, keep device data in sync, and communicate with other devices securely even when not connected to the Internet. Using AWS Lambda, Greengrass ensures your IoT devices can respond quickly to local events, operate with intermittent connections, and minimize the cost of transmitting IoT data to the cloud.
+
+## 3.28.10 - 2017-06-06
+
+* `Aws\ACM` - Documentation update for AWS Certificate Manager.
+* `Aws\CloudFront` - Doc update to fix incorrect prefix in S3OriginConfig
+* `Aws\IoT` - Update client side validation for SalesForce action.
+
+## 3.28.9 - 2017-06-05
+
+* `Aws\AppStream` - AppStream 2.0 Custom Security Groups allows you to easily control what network resources your streaming instances and images have access to. You can assign up to 5 security groups per Fleet to control the inbound and outbound network access to your streaming instances to specific IP ranges, network protocols, or ports.
+* `Aws\AutoScaling` - Autoscaling resource model update.
+* `Aws\IoT` -  Added Salesforce action to IoT Rules Engine.
+
+## 3.28.8 - 2017-06-02
+
+* `Aws\KinesisAnalytics` - Kinesis Analytics publishes error messages CloudWatch logs in case of application misconfigurations
+* `Aws\WorkDocs` - This release includes new APIs to manage tags and custom metadata on resources and also new APIs to add and retrieve comments at the document level.
+
+## 3.28.7 - 2017-06-01
+
+* `Aws\CodeDeploy` - AWS CodeDeploy has improved how it manages connections to GitHub accounts and repositories. You can now create and store up to 25 connections to GitHub accounts in order to associate AWS CodeDeploy applications with GitHub repositories. Each connection can support multiple repositories. You can create connections to up to 25 different GitHub accounts, or create more than one connection to a single account. The ListGitHubAccountTokenNames command has been introduced to retrieve the names of stored connections to GitHub accounts that you have created. The name of the connection to GitHub used for an AWS CodeDeploy application is also included in the ApplicationInfo structure. Two new fields, lastAttemptedDeployment and lastSuccessfulDeployment, have been added to DeploymentGroupInfo to improve the handling of deployment group information in the AWS CodeDeploy console. Information about these latest deployments can also be retrieved using the GetDeploymentGroup and BatchGetDeployment group requests. Also includes a region update (us-gov-west-1).
+* `Aws\CognitoIdentityProvider` - Added support within Amazon Cognito User Pools for 1) a customizable hosted UI for user sign up and sign in and 2) integration of external identity providers.
+* `Aws\ElasticLoadBalancingv2` - Update the existing DescribeRules API to support pagination.
+* `Aws\LexModelBuildingService` - Updated documentation and added examples for Amazon Lex Runtime Service.
+
+## 3.28.6 - 2017-05-31
+
+* `Aws\RDS` - Amazon RDS customers can now easily and quickly stop and start their DB instances.
+
+## 3.28.5 - 2017-05-30
+
+* `Aws\CloudDirectory` - Cloud Directory has launched support for Typed Links, enabling customers to create object-to-object relationships that are not hierarchical in nature. Typed Links enable customers to quickly query for data along these relationships. Customers can also enforce referential integrity using Typed Links, ensuring data in use is not inadvertently deleted.
+* `Aws\S3` - New example snippets for Amazon S3.
+* `Aws\S3` - S3 calls are now done with a host style URL by default. Options for path style on the client and command levels are available as `use_path_style_endpoint` and `@use_path_style_endpoint`, respectively. [More details on the differences between the styles can be found here.](http://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html#access-bucket-intro)
+
+## 3.28.4 - 2017-05-25
+
+* `Aws\AppStream` - Support added for persistent user storage, backed by S3.
+* `Aws\Rekognition` - Updated the CompareFaces API response to include orientation information, unmatched faces, landmarks, pose, and quality of the compared faces.
+
+## 3.28.3 - 2017-05-24
+
+* `Aws\IAM` - The unique ID and access key lengths were extended from 32 to 128
+* `Aws\STS` - The unique ID and access key lengths were extended from 32 to 128.
+* `Aws\StorageGateway` - Two Storage Gateway data types, Tape and TapeArchive, each have a new response element, TapeUsedInBytes. This element helps you manage your virtual tapes. By using TapeUsedInBytes, you can see the amount of data written to each virtual tape.
+
+## 3.28.2 - 2017-05-23
+
+* `Aws\DatabaseMigrationService` - This release adds support for using Amazon S3 and Amazon DynamoDB as targets for database migration, and using MongoDB as a source for database migration. For more information, see the AWS Database Migration Service documentation.
+
+## 3.28.1 - 2017-05-22
+
+* `Aws\ResourceGroupsTaggingAPI` - You can now specify the number of resources returned per page in GetResources operation, as an optional parameter, to easily manage the list of resources returned by your queries.
+* `Aws\SQS` - MD5 Validation of `MessageAttributes` is now being performed on `ReceiveMessage` calls. SQS uses a custom encoding for generating the hash input, [details on that scheme are available here.](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-message-attributes.html#sqs-attrib-md5)
+
+## 3.28.0 - 2017-05-18
+
+* `Aws\Athena` - This release adds support for Amazon Athena. Amazon Athena is an interactive query service that makes it easy to analyze data in Amazon S3 using standard SQL. Athena is serverless, so there is no infrastructure to manage, and you pay only for the queries that you run.
+* `Aws\Lightsail` - This release adds new APIs that make it easier to set network port configurations on Lightsail instances. Developers can now make a single request to both open and close public ports on an instance using the PutInstancePublicPorts operation.
+
+## 3.27.5 - 2017-05-17
+
+* `Aws\AutoScaling` - Various Auto Scaling documentation updates
+* `Aws\CloudWatchEvents` - Various CloudWatch Events documentation updates.
+* `Aws\CloudWatchLogs` - Various CloudWatch Logs documentation updates.
+* `Aws\Polly` - Amazon Polly adds new German voice "Vicki"
+
+## 3.27.4 - 2017-05-16
+
+* `Aws\CodeDeploy` - This release introduces the previousRevision field in the responses to the GetDeployment and BatchGetDeployments actions. previousRevision provides information about the application revision that was deployed to the deployment group before the most recent successful deployment. Also, the fileExistsBehavior parameter has been added for CreateDeployment action requests. In the past, if the AWS CodeDeploy agent detected files in a target location that weren't part of the application revision from the most recent successful deployment, it would fail the current deployment by default. This new parameter provides options for how the agent handles these files: fail the deployment, retain the content, or overwrite the content.
+* `Aws\GameLift` - Allow developers to specify how metrics are grouped in CloudWatch for their GameLift fleets. Developers can also specify how many concurrent game sessions activate on a per-instance basis.
+* `Aws\Inspector` - Adds ability to produce an assessment report that includes detailed and comprehensive results of a specified assessment run.
+* `Aws\KMS` - Update documentation for KMS.
+
+## 3.27.3 - 2017-05-15
+
+* `Aws\SSM` - UpdateAssociation API now supports updating document name and targets of an association. GetAutomationExecution API can return FailureDetails as an optional field to the StepExecution Object, which contains failure type, failure stage as well as other failure related information for a failed step.
+
+## 3.27.2 - 2017-05-11
+
+* `Aws\ElasticLoadBalancing` - Add a new API to allow customers to describe their account limits, such as load balancer limit, target group limit etc.
+* `Aws\ElasticLoadBalancingv2` - Add a new API to allow customers to describe their account limits, such as load balancer limit, target group limit etc.
+* `Aws\LexModelBuildingService` - Releasing new DeleteBotVersion, DeleteIntentVersion and DeleteSlotTypeVersion APIs.
+* `Aws\Organizations` - AWS Organizations APIs that return an Account object now include the email address associated with the account’s root user.
+
+## 3.27.1 - 2017-05-09
+
+* `Aws\CodeStar` - Updated documentation for AWS CodeStar.
+* `Aws\WorkSpaces` - Doc-only Update for WorkSpaces
+
+## 3.27.0 - 2017-05-04
+
+* `Aws\ECS` - Exposes container instance registration time in ECS:DescribeContainerInstances.
+* `Aws\Lambda` - Support for UpdateFunctionCode DryRun option
+* `Aws\MarketplaceEntitlementService` - AWS Marketplace Entitlement Service enables AWS Marketplace sellers to determine the capacity purchased by their customers.
+* `Aws\S3` - Fixed possible security issue in `Transfer`s download `transfer` operation where files could be downloaded to a directory outside the destination directory if the key contained relative paths. Ignoring files to continue with your transfer can be done through passing an iterator of files to download to `Transfer`s parameter: `$source`. These can be generated on `s3://` paths if you have registered the SDK's `StreamWrapper` via `\Aws\recursive_dir_iterator`.
+
+## 3.26.5 - 2017-04-28
+
+* `Aws\CloudFormation` - Adding back the removed waiters and paginators.
+
+## 3.26.4 - 2017-04-28
+
+* `Aws\CloudFormation` - API update for CloudFormation: New optional parameter ClientRequestToken which can be used as an idempotency token to safely retry certain operations as well as tagging StackEvents.
+* `Aws\RDS` - The DescribeDBClusterSnapshots API now returns a SourceDBClusterSnapshotArn field which identifies the source DB cluster snapshot of a copied snapshot.
+* `Aws\Rekognition` - Fix for missing file type check
+* `Aws\SQS` - Adding server-side encryption (SSE) support to SQS by integrating with AWS KMS; adding new queue attributes to SQS CreateQueue, SetQueueAttributes and GetQueueAttributes APIs to support SSE.
+* `Aws\Snowball` - The Snowball API has a new exception that can be thrown for list operation requests.
+
+## 3.26.3 - 2017-04-26
+
+* `Aws\RDS` - With Amazon Relational Database Service (Amazon RDS) running MySQL or Amazon Aurora, you can now authenticate to your DB instance using IAM database authentication.
+
+## 3.26.2 - 2017-04-21
+
+* `Aws\AppStream` - The new feature named "Default Internet Access" will enable Internet access from AppStream 2.0 instances - image builders and fleet instances. Admins will check a flag either through AWS management console for AppStream 2.0 or through API while creating an image builder or while creating/updating a fleet.
+* `Aws\Kinesis` - Adds a new waiter, StreamNotExists, to Kinesis 
+
 ## 3.26.1 - 2017-04-20
 
 * `Aws\DeviceFarm` - API Update for AWS Device Farm: Support for Deals and Promotions 

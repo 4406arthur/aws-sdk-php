@@ -3,7 +3,11 @@ Configuration
 =============
 
 This guide describes client constructor options. These options can be provided
-in a client constructor or to the ``Aws\Sdk`` class.
+in a client constructor or to the ``Aws\Sdk`` class. The array of options
+provided to a specific type of client may vary based on which client you are
+creating. These custom client configuration options are described in the
+`API documentation <http://docs.aws.amazon.com/aws-sdk-php/latest/>`_ of each
+client.
 
 
 .. contents:: Configuration Options
@@ -351,15 +355,16 @@ them in FIFO order.
     use Aws\DynamoDb\DynamoDbClient;
     use Aws\CommandInterface;
     use Psr\Http\Message\RequestInterface;
+    use Aws\Exception\AwsException;
 
     $mock = new MockHandler();
 
     // Return a mocked result.
-    $mock->append(new Result(['foo' => 'bar']);
+    $mock->append(new Result(['foo' => 'bar']));
 
     // You can provide a function to invoke. Here we throw a mock exception.
     $mock->append(function (CommandInterface $cmd, RequestInterface $req) {
-        return new AwsException('Mock exception', $command);
+        return new AwsException('Mock exception', $cmd);
     });
 
     // Create a client with the mock handler.
