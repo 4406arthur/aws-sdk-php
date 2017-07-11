@@ -1,5 +1,80 @@
 # CHANGELOG
 
+## 3.31.2 - 2017-07-06
+
+* `Aws\DirectoryService` - You can now improve the resilience and performance of your Microsoft AD directory by deploying additional domain controllers. Added UpdateNumberofDomainControllers API that allows you to update the number of domain controllers you want for your directory, and DescribeDomainControllers API that allows you to describe the detailed information of each domain controller of your directory. Also added the 'DesiredNumberOfDomainControllers' field to the DescribeDirectories API output for Microsoft AD.
+* `Aws\Ecs` - ECS/ECR now available in BJS
+* `Aws\KMS` - This release of AWS Key Management Service introduces the ability to determine whether a key is AWS managed or customer managed.
+* `Aws\Kinesis` - You can now encrypt your data at rest within an Amazon Kinesis Stream using server-side encryption. Server-side encryption via AWS KMS makes it easy for customers to meet strict data management requirements by encrypting their data at rest within the Amazon Kinesis Streams, a fully managed real-time data processing service.
+* `Aws\SSM` - Amazon EC2 Systems Manager now expands Patching support to Amazon Linux, Red Hat and Ubuntu in addition to the already supported Windows Server.
+
+## 3.31.1 - 2017-07-05
+
+* `Aws\CloudWatch` - We are excited to announce the availability of APIs and CloudFormation support for CloudWatch Dashboards. You can use the new dashboard APIs or CloudFormation templates to dynamically build and maintain dashboards to monitor your infrastructure and applications. There are four new dashboard APIs - PutDashboard, GetDashboard, DeleteDashboards, and ListDashboards APIs. PutDashboard is used to create a new dashboard or modify an existing one whereas GetDashboard is the API to get the details of a specific dashboard. ListDashboards and DeleteDashboards are used to get the names or delete multiple dashboards respectively. Getting started with dashboard APIs is similar to any other AWS APIs. The APIs can be accessed through AWS SDK or through CLI tools.
+* `Aws\Route53` - Bug fix for InvalidChangeBatch exception.
+
+## 3.31.0 - 2017-06-30
+
+* `Aws\MarketplaceCommerceAnalytics` - Documentation updates for AWS Marketplace Commerce Analytics.
+* `Aws\S3` - API Update for S3: Adding Object Tagging Header to MultipartUpload Initialization
+* `Aws\S3` - A new `params` option is available in the `MultipartUploader` and `MultipartCopy` classes for parameters that should be applied to all sub-commands of their upload functionality. This also improves functionality around passing `params` directly to `ObjectUploader` and `ObjectCopier`. A new `before_lookup` callback has been added to `ObjectCopier` for operating on the `HeadObject` command directly; `params` will be passed to HeadObject as well. Since these are changes to existing options, they may alter current functionality.
+
+## 3.30.4 - 2017-06-29
+
+* `Aws\CloudWatchEvents` - CloudWatch Events now allows different AWS accounts to share events with each other through a new resource called event bus. Event buses accept events from AWS services, other AWS accounts and PutEvents API calls. Currently all AWS accounts have one default event bus. To send events to another account, customers simply write rules to match the events of interest and attach an event bus in the receiving account as the target to the rule. The PutTargets API has been updated to allow adding cross account event buses as targets. In addition, we have released two new APIs - PutPermission and RemovePermission - that enables customers to add/remove permissions to their default event bus.
+* `Aws\GameLift` - Allow developers to download GameLift fleet creation logs to assist with debugging.
+* `Aws\SSM` - Adding Resource Data Sync support to SSM Inventory. New APIs: * CreateResourceDataSync - creates a new resource data sync configuration, * ListResourceDataSync - lists existing resource data sync configurations, * DeleteResourceDataSync - deletes an existing resource data sync configuration. 
+
+## 3.30.3 - 2017-06-27
+
+* `Aws\Greengrass` - AWS Greengrass is now available in new regions.
+* `Aws\ServiceCatalog` - Proper tagging of resources is critical to post-launch operations such as billing, cost allocation, and resource management. By using Service Catalog's TagOption Library, administrators can define a library of re-usable TagOptions that conform to company standards, and associate these with Service Catalog portfolios and products. Learn how to move your current tags to the new library, create new TagOptions, and view and associate your library items with portfolios and products. Understand how to ensure that the right tags are created on products launched through Service Catalog and how to provide users with defined selectable tags.
+
+## 3.30.2 - 2017-06-23
+
+* `Aws\Lambda` - The Lambda Invoke API will now throw new exception InvalidRuntimeException (status code 502) for invokes with deprecated runtimes.
+
+## 3.30.1 - 2017-06-22
+
+* `Aws\CodePipeline` - A new API, ListPipelineExecutions, enables you to retrieve summary information about the most recent executions in a pipeline, including pipeline execution ID, status, start time, and last updated time. You can request information for a maximum of 100 executions. Pipeline execution data is available for the most recent 12 months of activity.
+* `Aws\DatabaseMigrationService` - Added tagging for DMS certificates.
+* `Aws\ElasticLoadBalancing` - Add retry error state to InstanceInService waiter for ElasticLoadBalancer
+* `Aws\Lambda` - Lambda is now available in the Canada (Central) region.
+* `Aws\Lightsail` - This release adds a new nextPageToken property to the result of the GetOperationsForResource API. Developers can now get the next set of items in a list by making subsequent calls to GetOperationsForResource API with the token from the previous call. This release also deprecates the nextPageCount property, which previously returned null (use the nextPageToken property instead). This release also deprecates the customImageName property on the CreateInstancesRequest class, which was previously ignored by the API.
+* `Aws\Route53` - This release reintroduces the HealthCheckInUse exception.
+
+## 3.30.0 - 2017-06-21
+
+* `Aws\DAX` - Amazon DynamoDB Accelerator (DAX) is a fully managed, highly available, in-memory cache for DynamoDB that delivers up to a 10x performance improvement - from milliseconds to microseconds - even at millions of requests per second. DAX does all the heavy lifting required to add in-memory acceleration to your DynamoDB tables, without requiring developers to manage cache invalidation, data population, or cluster management.
+* `Aws\Route53` - Amazon Route 53 now supports multivalue answers in response to DNS queries, which lets you route traffic approximately randomly to multiple resources, such as web servers. Create one multivalue answer record for each resource and, optionally, associate an Amazon Route 53 health check with each record, and Amazon Route 53 responds to DNS queries with up to eight healthy records.
+* `Aws\SSM` - Adding hierarchy support to the SSM Parameter Store API. Added support tor tagging. New APIs: GetParameter - retrieves one parameter, DeleteParameters - deletes multiple parameters (max number 10), GetParametersByPath - retrieves parameters located in the hierarchy. Updated APIs: PutParameter - added ability to enforce parameter value by applying regex (AllowedPattern), DescribeParameters - modified to support Tag filtering.
+* `Aws\WAF` - You can now create, edit, update, and delete a new type of WAF rule with a rate tracking component.
+
+## 3.29.9 - 2017-06-20
+
+* `Aws\WorkDocs` - This release provides a new API to retrieve the activities performed by WorkDocs users.
+
+## 3.29.8 - 2017-06-19
+
+* `Aws\Organizations` - Improvements to Exception Modeling
+
+## 3.29.7 - 2017-06-16
+
+* `Aws\Batch` - AWS Batch is now available in the ap-northeast-1 region.
+* `Aws\XRay` - Add a response time histogram to the services in response of GetServiceGraph API.
+
+## 3.29.6 - 2017-06-15
+
+* `Aws\EC2` - Adds API to describe Amazon FPGA Images (AFIs) available to customers, which includes public AFIs, private AFIs that you own, and AFIs owned by other AWS accounts for which you have load permissions.
+* `Aws\ECS` - Added support for cpu, memory, and memory reservation container overrides on the RunTask and StartTask APIs.
+* `Aws\IoT` - Revert the last release: remove CertificatePem from DescribeCertificate API.
+* `Aws\ServiceCatalog` - Added ProvisioningArtifactSummaries to DescribeProductAsAdmin's output to show the provisioning artifacts belong to the product. Allow filtering by SourceProductId in SearchProductsAsAdmin for AWS Marketplace products. Added a verbose option to DescribeProvisioningArtifact to display the CloudFormation template used to create the provisioning artifact.Added DescribeProvisionedProduct API. Changed the type of ProvisionedProduct's Status to be distinct from Record's Status. New ProvisionedProduct's Status are AVAILABLE, UNDER_CHANGE, TAINTED, ERROR. Changed Record's Status set of values to CREATED, IN_PROGRESS, IN_PROGRESS_IN_ERROR, SUCCEEDED, FAILED.
+
+## 3.29.5 - 2017-06-14
+
+* `Aws\ApplicationAutoScaling` - Application Auto Scaling now supports automatic scaling of read and write throughput capacity for DynamoDB tables and global secondary indexes.
+* `Aws\CloudDirectory` - Documentation update for Cloud Directory
+
 ## 3.29.4 - 2017-06-13
 
 * `Aws\ConfigService` - With this release AWS Config supports the Amazon CloudWatch alarm resource type.
