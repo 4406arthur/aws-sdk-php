@@ -1,6 +1,7 @@
 <?php
 namespace Aws\Test;
 
+use Aws\Api\Service;
 use Aws\ClientResolver;
 use Aws\CommandInterface;
 use Aws\Credentials\CredentialProvider;
@@ -94,6 +95,48 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('serializer', $conf);
     }
 
+    public function testAppliesApiProviderSigningNameToConfig()
+    {
+        $signingName = 'foo';
+        $r = new ClientResolver(ClientResolver::getDefaultArguments());
+        $conf = $r->resolve([
+            'service'      => 'dynamodb',
+            'region'       => 'x',
+            'api_provider' => function () use ($signingName) {
+                return ['metadata' => [
+                    'protocol' => 'query',
+                    'signingName' => $signingName,
+                ]];
+            },
+            'version'      => 'latest'
+        ], new HandlerList());
+        $this->assertSame($conf['config']['signing_name'], $signingName);
+    }
+
+    public function testPrefersApiProviderNameToPartitionName()
+    {
+        $signingName = 'foo';
+        $r = new ClientResolver(ClientResolver::getDefaultArguments());
+        $conf = $r->resolve([
+            'service'      => 'dynamodb',
+            'region'       => 'x',
+            'api_provider' => function () use ($signingName) {
+                return ['metadata' => [
+                    'protocol' => 'query',
+                    'signingName' => $signingName,
+                ]];
+            },
+            'endpoint_provider' => function () use ($signingName) {
+                return [
+                    'endpoint' => 'https://www.amazon.com',
+                    'signingName' => "not_$signingName",
+                ];
+            },
+            'version'      => 'latest'
+        ], new HandlerList());
+        $this->assertSame($conf['config']['signing_name'], $signingName);
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid configuration value provided for "foo". Expected string, but got int(-1)
@@ -122,6 +165,44 @@ class ClientResolverTest extends \PHPUnit_Framework_TestCase
             ]
         ]);
         $r->resolve(['foo' => 'c'], new HandlerList());
+    }
+
+    public function testValidatesCallableClosure()
+    {
+        $r = new ClientResolver([
+            'foo' => [
+                'type' => 'value',
+                'valid' => ['string'],
+                'default' => function () {
+                    return 'callable_test';
+                }
+            ]
+        ]);
+        $res = $r->resolve([], new HandlerList());
+        $this->assertEquals('callable_test', $res['foo']);
+    }
+
+    public function checkCallable()
+    {
+        return "testcall";
+    }
+
+    public function testValidatesNotInvokeStringCallable()
+    {
+        $callableFunction = '\Aws\test\ClientResolverTest::checkCallable';
+        $r = new ClientResolver([
+            'foo' => [
+                'type'    => 'value',
+                'valid'   => ['string'],
+                'default' => $callableFunction
+            ]
+        ]);
+        $res = $r->resolve([], new HandlerList());
+        $this->assertTrue(is_callable($callableFunction));
+        $this->assertEquals(
+            '\Aws\test\ClientResolverTest::checkCallable',
+            $res['foo']
+        );
     }
 
     /**
@@ -274,6 +355,7 @@ EOT;
 
     public function testCanUseCredentialsCache()
     {
+        putenv('AWS_CONTAINER_CREDENTIALS_RELATIVE_URI');
         $credentialsEnvironment = [
             'home' => 'HOME',
             'key' => CredentialProvider::ENV_KEY,
@@ -289,7 +371,7 @@ EOT;
 
         $c = new Credentials('foo', 'bar');
         $cache = new LruArrayCache;
-        $cache->set('aws_cached_credentials', $c);
+        $cache->set('aws_cached_instance_credentials', $c);
         $r = new ClientResolver(ClientResolver::getDefaultArguments());
         $conf = $r->resolve([
             'service'     => 'sqs',
@@ -409,6 +491,22 @@ EOT;
 
     /**
      * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage A "version" configuration value is required
+     */
+    public function testHasSpecificMessageForNullRequiredVersion()
+    {
+        $r = new ClientResolver(ClientResolver::getDefaultArguments());
+        $list = new HandlerList();
+        $r->resolve([
+            'service'     => 'foo',
+            'region'      => 'x',
+            'credentials' => ['key' => 'a', 'secret' => 'b'],
+            'version'     => null,
+        ], $list);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage A "region" configuration value is required for the "foo" service
      */
     public function testHasSpecificMessageForMissingRegion()
@@ -416,6 +514,22 @@ EOT;
         $args = ClientResolver::getDefaultArguments()['region'];
         $r = new ClientResolver(['region' => $args]);
         $r->resolve(['service' => 'foo'], new HandlerList());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage A "region" configuration value is required for the "foo" service
+     */
+    public function testHasSpecificMessageForNullRequiredRegion()
+    {
+        $r = new ClientResolver(ClientResolver::getDefaultArguments());
+        $list = new HandlerList();
+        $r->resolve([
+            'service'     => 'foo',
+            'region'      => null,
+            'credentials' => ['key' => 'a', 'secret' => 'b'],
+            'version'     => 'latest',
+        ], $list);
     }
 
     public function testAddsTraceMiddleware()
@@ -557,10 +671,10 @@ EOT;
             array_flip(['endpoint_provider', 'service', 'region', 'scheme', $argName])
         );
         $resolver = new ClientResolver($resolverArgs);
-        
+
         $resolved = $resolver->resolve($args, new HandlerList);
         $this->assertSame($expected, $resolved[$argName]);
-        
+
         $resolved = $resolver->resolve([$argName => $override] + $args, new HandlerList);
         $this->assertSame($override, $resolved[$argName]);
     }
@@ -647,6 +761,37 @@ EOT;
                 'signing_region',
                 'us-east-1',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider idempotencyAutoFillProvider
+     *
+     * @param mixed $value
+     * @param bool $shouldAddIdempotencyMiddleware
+     */
+    public function testIdempotencyTokenMiddlewareAddedAsAppropriate(
+        $value,
+        $shouldAddIdempotencyMiddleware
+    ){
+        $args = [
+            'api' => new Service([], function () { return []; }),
+        ];
+        $list = new HandlerList;
+
+        $this->assertSame(0, count($list));
+        ClientResolver::_apply_idempotency_auto_fill($value, $args, $list);
+        $this->assertSame($shouldAddIdempotencyMiddleware ? 1 : 0, count($list));
+    }
+
+    public function idempotencyAutoFillProvider()
+    {
+        return [
+            [true, true],
+            [false, false],
+            ['truthy', false],
+            ['openssl_random_pseudo_bytes', true],
+            [function ($length) { return 'foo'; }, true],
         ];
     }
 }

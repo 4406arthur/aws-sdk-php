@@ -127,4 +127,65 @@ class MultipartUploaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($configProp->getValue($classicMup), $configProp->getValue($putObjectMup));
     }
+
+    public function testMultipartSuccessStreams()
+    {
+        $size = 12 * self::MB;
+        $data = str_repeat('.', $size);
+        $filename = sys_get_temp_dir() . '/' . self::FILENAME;
+        file_put_contents($filename, $data);
+
+        return [
+            [ // Seekable stream, regular config
+                Psr7\stream_for(fopen($filename, 'r')),
+                $size,
+            ],
+            [ // Non-seekable stream
+                Psr7\stream_for($data),
+                $size,
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider testMultipartSuccessStreams
+     */
+    public function testS3MultipartUploadParams($stream, $size)
+    {
+        /** @var \Aws\S3\S3Client $client */
+        $client = $this->getTestClient('s3');
+        $uploadOptions = [
+            'bucket'          => 'foo',
+            'key'             => 'bar',
+            'params'          => [
+                'RequestPayer'  => 'test',
+                'ContentLength' => $size
+            ],
+            'before_initiate' => function($command) {
+                $this->assertEquals('test', $command['RequestPayer']);
+            },
+            'before_upload'   => function($command) use ($size) {
+                $this->assertLessThan($size, $command['ContentLength']);
+                $this->assertEquals('test', $command['RequestPayer']);
+            },
+            'before_complete' => function($command) {
+                $this->assertEquals('test', $command['RequestPayer']);
+            }
+        ];
+        $url = 'http://foo.s3.amazonaws.com/bar';
+
+        $this->addMockResults($client, [
+            new Result(['UploadId' => 'baz']),
+            new Result(['ETag' => 'A']),
+            new Result(['ETag' => 'B']),
+            new Result(['ETag' => 'C']),
+            new Result(['Location' => $url])
+        ]);
+
+        $uploader = new MultipartUploader($client, $stream, $uploadOptions);
+        $result = $uploader->upload();
+
+        $this->assertTrue($uploader->getState()->isCompleted());
+        $this->assertEquals($url, $result['ObjectURL']);
+    }
 }
