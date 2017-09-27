@@ -31,9 +31,6 @@ or by downloading a single zip or phar file from our [latest release][latest-rel
 * [Issues][sdk-issues] – Report issues, submit pull requests, and get involved
   (see [Apache 2.0 License][sdk-license])
 * [@awsforphp][sdk-twitter] – Follow us on Twitter
-* For Version 2 of the SDK:
-  * [User Guide][docs-guide-v2]
-  * [API Docs][docs-api-v2]
 
 ## Getting Help
 
@@ -132,6 +129,9 @@ try {
 * [AWS SDK Bundle for Symfony][mod-symfony]
 * [Amazon SNS Message Validator for PHP][sns-validator] - SNS validator without requiring SDK
 * [Guzzle Version 6][guzzle-docs] – PHP HTTP client and framework
+* For Version 2 of the SDK:
+  * [User Guide][docs-guide-v2]
+  * [API Docs][docs-api-v2]
 * Other [AWS SDKs & Tools][aws-tools] (e.g., js, cli, ruby, python, java, etc.)
 
 [sdk-website]: http://aws.amazon.com/sdkforphp
@@ -161,6 +161,7 @@ try {
 [docs-exceptions]: http://docs.aws.amazon.com/aws-sdk-php/v3/guide/quick-start.html#error-handling
 [docs-wire-logging]: http://docs.aws.amazon.com/aws-sdk-php/v3/guide/faq.html#how-can-i-see-what-data-is-sent-over-the-wire
 [docs-ddbsh]: http://docs.aws.amazon.com/aws-sdk-php/v3/guide/service/dynamodb-session-handler.html
+[docs-services]: https://aws.amazon.com/products/
 [docs-rande]: http://docs.aws.amazon.com/general/latest/gr/rande.html
 [docs-streamwrapper]: http://docs.aws.amazon.com/aws-sdk-php/v3/guide/service/s3-stream-wrapper.html
 [docs-s3-transfer]: http://docs.aws.amazon.com/aws-sdk-php/v3/guide/service/s3-transfer.html
