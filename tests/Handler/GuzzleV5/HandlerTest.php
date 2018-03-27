@@ -16,13 +16,13 @@ use GuzzleHttp\Psr7\Request as PsrRequest;
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use GuzzleHttp\Ring\Client\MockHandler;
 use GuzzleHttp\Stream\Stream;
-use GuzzleHttp\Tests\Ring\Client\MockHandlerTest;
 use React\Promise\Deferred;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers Aws\Handler\GuzzleV5\GuzzleHandler
  */
-class HandlerTest extends \PHPUnit_Framework_TestCase
+class HandlerTest extends TestCase
 {
     public function setUp()
     {
@@ -128,7 +128,7 @@ EOXML;
             $this->assertInstanceOf(PsrResponse::class, $error['response']);
             $this->assertEquals(404, $error['response']->getStatusCode());
             $this->assertEquals($xml, $error['response']->getBody());
-            $this->assertEquals($xml, file_get_contents($sink));
+            $this->assertStringEqualsFile($sink, $xml);
             unlink($sink);
         }
 
@@ -201,7 +201,7 @@ EOXML;
 
     private function getHandler(Deferred $deferred, $output = 'foo')
     {
-        $client = $this->getMock('GuzzleHttp\Client', ['send']);
+        $client = $this->getMockBuilder('GuzzleHttp\Client')->setMethods(['send'])->getMock();
         $future = new FutureResponse($deferred->promise());
         $client->method('send')->willReturn($future);
 

@@ -11,11 +11,12 @@ use Aws\S3\S3Client;
 use Aws\S3\StreamWrapper;
 use Aws\Test\UsesServiceTrait;
 use GuzzleHttp\Psr7;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers Aws\S3\StreamWrapper
  */
-class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
+class StreamWrapperPathStyleTest extends TestCase
 {
     use UsesServiceTrait;
 
@@ -164,7 +165,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(fclose($s));
 
         // Ensure that the stream was flushed and sent the upload
-        $this->assertEquals(1, count($history));
+        $this->assertCount(1, $history);
         $cmd = $history->getLastCommand();
         $this->assertEquals('PutObject', $cmd->getName());
         $this->assertEquals('bucket', $cmd['Bucket']);
@@ -204,7 +205,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(fclose($s));
 
         // Ensure that the stream was flushed and sent the upload
-        $this->assertEquals(2, count($history));
+        $this->assertCount(2, $history);
         $entries = $history->toArray();
         $c1 = $entries[0]['command'];
         $this->assertEquals('GetObject', $c1->getName());
@@ -236,7 +237,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
             new Result(['@metadata' => ['statusCode' => 204]])
         ]);
         $this->assertTrue(unlink('s3://bucket/key'));
-        $this->assertEquals(1, count($history));
+        $this->assertCount(1, $history);
         $entries = $history->toArray();
         $this->assertEquals('DELETE', $entries[0]['request']->getMethod());
         $this->assertEquals('/bucket/key', $entries[0]['request']->getUri()->getPath());
@@ -298,7 +299,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(mkdir('s3://bucket', 0601));
         $this->assertTrue(mkdir('s3://bucket', 0500));
 
-        $this->assertEquals(6, count($history));
+        $this->assertCount(6, $history);
         $entries = $history->toArray();
 
         $this->assertEquals('HEAD', $entries[0]['request']->getMethod());
@@ -324,7 +325,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->assertTrue(mkdir('s3://bucket/key/', 0777));
-        $this->assertEquals(2, count($history));
+        $this->assertCount(2, $history);
         $entries = $history->toArray();
         $this->assertEquals('HEAD', $entries[0]['request']->getMethod());
         $this->assertEquals('PUT', $entries[1]['request']->getMethod());
@@ -358,7 +359,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
         $this->client->getHandlerList()->appendSign(Middleware::history($history));
         $this->addMockResults($this->client, [new Result()]);
         $this->assertTrue(rmdir('s3://bucket'));
-        $this->assertEquals(1, count($history));
+        $this->assertCount(1, $history);
         $entries = $history->toArray();
         $this->assertEquals('DELETE', $entries[0]['request']->getMethod());
         $this->assertEquals('/bucket', $entries[0]['request']->getUri()->getPath());
@@ -402,7 +403,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
             new Result()
         ]);
         $this->assertTrue(rmdir('s3://foo/bar'));
-        $this->assertEquals(2, count($history));
+        $this->assertCount(2, $history);
         $entries = $history->toArray();
         $this->assertEquals('GET', $entries[0]['request']->getMethod());
         $this->assertContains('prefix=bar%2F', $entries[0]['request']->getUri()->getQuery());
@@ -452,7 +453,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
         ]);
         $this->assertTrue(rename('s3://bucket/key', 's3://other/new_key'));
         $entries = $history->toArray();
-        $this->assertEquals(3, count($entries));
+        $this->assertCount(3, $entries);
         $this->assertEquals('HEAD', $entries[0]['request']->getMethod());
         $this->assertEquals('/bucket/key', $entries[0]['request']->getUri()->getPath());
         $this->assertEquals('PUT', $entries[1]['request']->getMethod());
@@ -486,7 +487,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
             stream_context_create(['s3' => ['MetadataDirective' => 'REPLACE']])
         ));
         $entries = $history->toArray();
-        $this->assertEquals(3, count($entries));
+        $this->assertCount(3, $entries);
         $this->assertEquals('PUT', $entries[1]['request']->getMethod());
         $this->assertEquals('/other/new_key', $entries[1]['request']->getUri()->getPath());
         $this->assertEquals('s3.amazonaws.com', $entries[1]['request']->getUri()->getHost());
@@ -707,7 +708,7 @@ class StreamWrapperPathStyleTest extends \PHPUnit_Framework_TestCase
         $this->addMockResults($this->client, [
             function ($cmd, $r) { return new S3Exception('404', $cmd); },
         ]);
-        $this->assertFalse(file_exists('s3://bucket/key'));
+        $this->assertFileNotExists('s3://bucket/key');
     }
 
     public function testProvidesDirectoriesForS3()

@@ -3,15 +3,15 @@ namespace Aws\Test\Signature;
 
 use Aws\Credentials\Credentials;
 use Aws\Signature\S3SignatureV4;
-use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Request;
 
 require_once __DIR__ . '/sig_hack.php';
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers Aws\Signature\S3SignatureV4
  */
-class S3SignatureV4Test extends \PHPUnit_Framework_TestCase
+class S3SignatureV4Test extends TestCase
 {
     public static function setUpBeforeClass()
     {
@@ -61,6 +61,23 @@ class S3SignatureV4Test extends \PHPUnit_Framework_TestCase
         $ctx = $meth->invoke($signature, $parsed, 'foo');
         $this->assertStringStartsWith(
             "GET\n/.././foo",
+            $ctx['creq']
+        );
+    }
+
+    public function testDoesNotRemoveMultiplePrecedingSlashes()
+    {
+        list($request, $credentials, $signature) = $this->getFixtures();
+        $uri = $request->getUri()->withPath('//foo');
+        $request = $request->withUri($uri);
+        $p = new \ReflectionMethod($signature, 'parseRequest');
+        $p->setAccessible(true);
+        $parsed = $p->invoke($signature, $request);
+        $meth = new \ReflectionMethod($signature, 'createContext');
+        $meth->setAccessible(true);
+        $ctx = $meth->invoke($signature, $parsed, 'foo');
+        $this->assertStringStartsWith(
+            "GET\n//foo",
             $ctx['creq']
         );
     }

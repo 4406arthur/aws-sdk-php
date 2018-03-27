@@ -15,11 +15,12 @@ use Aws\Sts\StsClient;
 use Aws\WrappedHttpHandler;
 use GuzzleHttp\Promise\RejectedPromise;
 use Psr\Http\Message\RequestInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers Aws\AwsClient
  */
-class AwsClientTest extends \PHPUnit_Framework_TestCase
+class AwsClientTest extends TestCase
 {
     use UsesServiceTrait;
 
@@ -288,7 +289,7 @@ class AwsClientTest extends \PHPUnit_Framework_TestCase
         $ref = new \ReflectionMethod($client, 'getSignatureProvider');
         $ref->setAccessible(true);
         $provider = $ref->invoke($client);
-        $this->assertTrue(is_callable($provider));
+        $this->assertInternalType('callable', $provider);
     }
 
     /**
@@ -401,13 +402,13 @@ class AwsClientTest extends \PHPUnit_Framework_TestCase
                 return isset($service['waiters'])
                     ? ['waiters' => $service['waiters'], 'version' => 2]
                     : ['waiters' => [], 'version' => 2];
-            } else {
-                if (!isset($service['metadata'])) {
-                    $service['metadata'] = [];
-                }
-                $service['metadata']['protocol'] = 'query';
-                return $service;
             }
+
+            if (!isset($service['metadata'])) {
+                $service['metadata'] = [];
+            }
+            $service['metadata']['protocol'] = 'query';
+            return $service;
         };
 
         return new AwsClient($config + [

@@ -2,11 +2,12 @@
 namespace Aws\Test\Build\Changelog;
 
 use Aws\Build\Changelog\ChangelogBuilder;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers Aws\Build\Changelog\ChangelogBuilder
  */
-class ChangelogBuilderTest extends \PHPUnit_Framework_TestCase
+class ChangelogBuilderTest extends TestCase
 {
 
     private $RESOURCE_DIR = "tests/Build/Changelog/resources/";
@@ -85,8 +86,8 @@ class ChangelogBuilderTest extends \PHPUnit_Framework_TestCase
         $params['base_dir'] = $tempDir;
         $obj = new ChangelogBuilder($params);
         touch($tempDir . ".changes/nextrelease/temp.json");
-        $this->assertEquals(1, count(preg_grep('/^([^.])/', scandir($tempDir . ".changes/nextrelease/"))));
+        $this->assertCount(1, preg_grep('/^([^.])/', scandir($tempDir . ".changes/nextrelease/")));
         $obj->cleanNextReleaseFolder();
-        $this->assertEquals(0, count(preg_grep('/^([^.])/', scandir($tempDir . ".changes/nextrelease/"))));
+        $this->assertCount(0, preg_grep('/^([^.])/', scandir($tempDir . ".changes/nextrelease/")));
     }
 }
