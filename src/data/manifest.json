@@ -6,6 +6,13 @@
             "2015-12-08": "2015-12-08"
         }
     },
+    "alexaforbusiness": {
+        "namespace": "AlexaForBusiness",
+        "versions": {
+            "latest": "2017-11-09",
+            "2017-11-09": "2017-11-09"
+        }
+    },
     "apigateway": {
         "namespace": "ApiGateway",
         "versions": {
@@ -28,11 +35,25 @@
             "2016-12-01": "2016-12-01"
         }
     },
+    "appsync": {
+        "namespace": "AppSync",
+        "versions": {
+            "latest": "2017-07-25",
+            "2017-07-25": "2017-07-25"
+        }
+    },
     "athena": {
         "namespace": "Athena",
         "versions": {
             "latest": "2017-05-18",
             "2017-05-18": "2017-05-18"
+        }
+    },
+    "autoscaling-plans": {
+        "namespace": "AutoScalingPlans",
+        "versions": {
+            "latest": "2018-01-06",
+            "2018-01-06": "2018-01-06"
         }
     },
     "autoscaling": {
@@ -54,6 +75,20 @@
         "versions": {
             "latest": "2016-10-20",
             "2016-10-20": "2016-10-20"
+        }
+    },
+    "ce": {
+        "namespace": "CostExplorer",
+        "versions": {
+            "latest": "2017-10-25",
+            "2017-10-25": "2017-10-25"
+        }
+    },
+    "cloud9": {
+        "namespace": "Cloud9",
+        "versions": {
+            "latest": "2017-09-23",
+            "2017-09-23": "2017-09-23"
         }
     },
     "clouddirectory": {
@@ -177,6 +212,13 @@
         "versions": {
             "latest": "2014-06-30",
             "2014-06-30": "2014-06-30"
+        }
+    },
+    "comprehend": {
+        "namespace": "Comprehend",
+        "versions": {
+            "latest": "2017-11-27",
+            "2017-11-27": "2017-11-27"
         }
     },
     "config": {
@@ -395,6 +437,13 @@
             "2017-06-07": "2017-06-07"
         }
     },
+    "guardduty": {
+        "namespace": "GuardDuty",
+        "versions": {
+            "latest": "2017-11-28",
+            "2017-11-28": "2017-11-28"
+        }
+    },
     "health": {
         "namespace": "Health",
         "versions": {
@@ -424,11 +473,32 @@
             "2015-08-18": "2016-02-16"
         }
     },
+    "iot-jobs-data": {
+        "namespace": "IoTJobsDataPlane",
+        "versions": {
+            "latest": "2017-09-29",
+            "2017-09-29": "2017-09-29"
+        }
+    },
     "iot": {
         "namespace": "Iot",
         "versions": {
             "latest": "2015-05-28",
             "2015-05-28": "2015-05-28"
+        }
+    },
+    "kinesis-video-archived-media": {
+        "namespace": "KinesisVideoArchivedMedia",
+        "versions": {
+            "latest": "2017-09-30",
+            "2017-09-30": "2017-09-30"
+        }
+    },
+    "kinesis-video-media": {
+        "namespace": "KinesisVideoMedia",
+        "versions": {
+            "latest": "2017-09-30",
+            "2017-09-30": "2017-09-30"
         }
     },
     "kinesis": {
@@ -443,6 +513,13 @@
         "versions": {
             "latest": "2015-08-14",
             "2015-08-14": "2015-08-14"
+        }
+    },
+    "kinesisvideo": {
+        "namespace": "KinesisVideo",
+        "versions": {
+            "latest": "2017-09-30",
+            "2017-09-30": "2017-09-30"
         }
     },
     "kms": {
@@ -494,6 +571,41 @@
             "2015-07-01": "2015-07-01"
         }
     },
+    "mediaconvert": {
+        "namespace": "MediaConvert",
+        "versions": {
+            "latest": "2017-08-29",
+            "2017-08-29": "2017-08-29"
+        }
+    },
+    "medialive": {
+        "namespace": "MediaLive",
+        "versions": {
+            "latest": "2017-10-14",
+            "2017-10-14": "2017-10-14"
+        }
+    },
+    "mediapackage": {
+        "namespace": "MediaPackage",
+        "versions": {
+            "latest": "2017-10-12",
+            "2017-10-12": "2017-10-12"
+        }
+    },
+    "mediastore-data": {
+        "namespace": "MediaStoreData",
+        "versions": {
+            "latest": "2017-09-01",
+            "2017-09-01": "2017-09-01"
+        }
+    },
+    "mediastore": {
+        "namespace": "MediaStore",
+        "versions": {
+            "latest": "2017-09-01",
+            "2017-09-01": "2017-09-01"
+        }
+    },
     "metering.marketplace": {
         "namespace": "MarketplaceMetering",
         "versions": {
@@ -520,6 +632,13 @@
         "versions": {
             "latest": "2010-08-01",
             "2010-08-01": "2010-08-01"
+        }
+    },
+    "mq": {
+        "namespace": "MQ",
+        "versions": {
+            "latest": "2017-11-27",
+            "2017-11-27": "2017-11-27"
         }
     },
     "mturk-requester": {
@@ -564,6 +683,13 @@
             "2016-06-10": "2016-06-10"
         }
     },
+    "pricing": {
+        "namespace": "Pricing",
+        "versions": {
+            "latest": "2017-10-15",
+            "2017-10-15": "2017-10-15"
+        }
+    },
     "rds": {
         "namespace": "Rds",
         "versions": {
@@ -584,6 +710,13 @@
         "versions": {
             "latest": "2016-06-27",
             "2016-06-27": "2016-06-27"
+        }
+    },
+    "resource-groups": {
+        "namespace": "ResourceGroups",
+        "versions": {
+            "latest": "2017-11-27",
+            "2017-11-27": "2017-11-27"
         }
     },
     "resourcegroupstaggingapi": {
@@ -614,6 +747,13 @@
             "2016-11-28": "2016-11-28"
         }
     },
+    "runtime.sagemaker": {
+        "namespace": "SageMakerRuntime",
+        "versions": {
+            "latest": "2017-05-13",
+            "2017-05-13": "2017-05-13"
+        }
+    },
     "s3": {
         "namespace": "S3",
         "versions": {
@@ -621,11 +761,32 @@
             "2006-03-01": "2006-03-01"
         }
     },
+    "sagemaker": {
+        "namespace": "SageMaker",
+        "versions": {
+            "latest": "2017-07-24",
+            "2017-07-24": "2017-07-24"
+        }
+    },
+    "serverlessrepo": {
+        "namespace": "ServerlessApplicationRepository",
+        "versions": {
+            "latest": "2017-09-08",
+            "2017-09-08": "2017-09-08"
+        }
+    },
     "servicecatalog": {
         "namespace": "ServiceCatalog",
         "versions": {
             "latest": "2015-12-10",
             "2015-12-10": "2015-12-10"
+        }
+    },
+    "servicediscovery": {
+        "namespace": "ServiceDiscovery",
+        "versions": {
+            "latest": "2017-03-14",
+            "2017-03-14": "2017-03-14"
         }
     },
     "shield": {
@@ -712,6 +873,20 @@
             "2012-01-25": "2012-01-25"
         }
     },
+    "transcribe": {
+        "namespace": "TranscribeService",
+        "versions": {
+            "latest": "2017-10-26",
+            "2017-10-26": "2017-10-26"
+        }
+    },
+    "translate": {
+        "namespace": "Translate",
+        "versions": {
+            "latest": "2017-07-01",
+            "2017-07-01": "2017-07-01"
+        }
+    },
     "waf-regional": {
         "namespace": "WafRegional",
         "versions": {
@@ -731,6 +906,13 @@
         "versions": {
             "latest": "2016-05-01",
             "2016-05-01": "2016-05-01"
+        }
+    },
+    "workmail": {
+        "namespace": "WorkMail",
+        "versions": {
+            "latest": "2017-10-01",
+            "2017-10-01": "2017-10-01"
         }
     },
     "workspaces": {

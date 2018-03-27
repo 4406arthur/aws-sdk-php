@@ -7,11 +7,12 @@ use Aws\S3\S3Client;
 use Aws\Test\UsesServiceTrait;
 
 require_once __DIR__ . '/sig_hack.php';
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers Aws\S3\PostObject
+ * @covers Aws\S3\PostObjectV4
  */
-class PostObjectV4Test extends \PHPUnit_Framework_TestCase
+class PostObjectV4Test extends TestCase
 {
     use UsesServiceTrait;
 
@@ -267,6 +268,39 @@ class PostObjectV4Test extends \PHPUnit_Framework_TestCase
             ['http://s3.amazonaws.com', 'amazonaws', 'http://amazonaws.s3.amazonaws.com'],
             ['http://foo.bar.s3.amazonaws.com', 'foo.bar', 'http://foo.bar.s3.amazonaws.com'],
             ['http://foo.com', 'foo.com', 'http://foo.com.foo.com'],
+        ];
+    }
+
+    /**
+     * @dataProvider pathStyleProvider
+     *
+     * @param string $endpoint
+     * @param string $bucket
+     * @param string $expected
+     */
+    public function testCanHandleForcedPathStyleEndpoint($endpoint, $bucket, $expected)
+    {
+        $s3 = new S3Client([
+            'version' => 'latest',
+            'region' => 'us-east-1',
+            'credentials' => [
+                'key' => 'akid',
+                'secret' => 'secret',
+            ],
+            'endpoint' => $endpoint,
+            'use_path_style_endpoint' => true,
+        ]);
+        $postObject = new PostObjectV4($s3, $bucket, []);
+        $formAttrs = $postObject->getFormAttributes();
+        $this->assertEquals($expected, $formAttrs['action']);
+    }
+
+    public function pathStyleProvider()
+    {
+        return [
+            ['http://s3.amazonaws.com', 'foo', 'http://s3.amazonaws.com/foo'],
+            ['http://s3.amazonaws.com', 'foo.bar', 'http://s3.amazonaws.com/foo.bar'],
+            ['http://foo.com', 'foo.com', 'http://foo.com/foo.com'],
         ];
     }
 }

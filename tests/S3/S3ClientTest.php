@@ -5,7 +5,6 @@ use Aws\Command;
 use Aws\Exception\AwsException;
 use Aws\Result;
 use Aws\S3\Exception\S3Exception;
-use Aws\S3\MultipartUploader;
 use Aws\S3\S3Client;
 use Aws\Test\UsesServiceTrait;
 use GuzzleHttp\Exception\ConnectException;
@@ -14,15 +13,15 @@ use GuzzleHttp\Promise;
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Promise\RejectedPromise;
 use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\FnStream;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\StreamInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers Aws\S3\S3Client
+ * @covers Aws\S3\S3ClientTrait
  */
-class S3ClientTest extends \PHPUnit_Framework_TestCase
+class S3ClientTest extends TestCase
 {
     use UsesServiceTrait;
 
@@ -849,7 +848,7 @@ EOXML;
             'region' => 'us-west-2',
             'http_handler' => function (RequestInterface $r, array $opts = []) {
                 $this->assertArrayHasKey('decode_content', $opts);
-                $this->assertSame(false, $opts['decode_content']);
+                $this->assertFalse($opts['decode_content']);
 
                 return Promise\promise_for(new Response);
             }
@@ -866,7 +865,7 @@ EOXML;
             'http' => ['decode_content' => false],
             'http_handler' => function (RequestInterface $r, array $opts = []) {
                 $this->assertArrayHasKey('decode_content', $opts);
-                $this->assertSame(false, $opts['decode_content']);
+                $this->assertFalse($opts['decode_content']);
 
                 return Promise\promise_for(new Response);
             }
@@ -882,7 +881,7 @@ EOXML;
             'region' => 'us-west-2',
             'http_handler' => function (RequestInterface $r, array $opts = []) {
                 $this->assertArrayHasKey('decode_content', $opts);
-                $this->assertSame(false, $opts['decode_content']);
+                $this->assertFalse($opts['decode_content']);
 
                 return Promise\promise_for(new Response);
             }

@@ -4,6 +4,7 @@ namespace Aws\Signature;
 use Aws\Credentials\CredentialsInterface;
 use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Psr7;
+use GuzzleHttp\Url;
 
 /**
  * Amazon S3 signature version 2 support.
@@ -65,9 +66,9 @@ class S3SignatureV2 extends SignatureV2
         $expires
     ) {
         $parsed = $this->createPresignedRequest($request, $credentials);
-        //$params = Psr7\parse_query($request->getBody());
-        //Support Google Cloud Storage
-        if($parsed['uri']->getHost() === 'storage.googleapis.com'){
+        $bucket = $request->bucket;
+        //Support both path-style and bucket-style in Google Cloud Storage
+        if (preg_match('/storage.googleapis.com/', $parsed['uri']->getHost())) {
             $parsed['query']['GoogleAccessId'] = $credentials->getAccessKeyId();
             unset($parsed['query']['AWSAccessKeyId']);
             if (!empty($parsed['query']['x-amz-copy-source'][0])){
@@ -75,8 +76,11 @@ class S3SignatureV2 extends SignatureV2
                 = $parsed['query']['x-amz-copy-source'][0];
                 unset($parsed['query']['x-amz-copy-source']);
             }
-        }else{
+        } else {
             $parsed['query']['AWSAccessKeyId'] = $credentials->getAccessKeyId();
+        }
+        if (preg_match("/^$bucket/",$parsed['uri']->getHost())){
+            $bucketStyle = true;
         }
         $parsed['query']['SignatureMethod'] = 'HmacSHA1';
         $parsed['query']['SignatureVersion'] = '2';
@@ -89,7 +93,14 @@ class S3SignatureV2 extends SignatureV2
         $sign .= ($request->hasHeader("Content-Type")? implode(":", $request->getHeader("Content-Type")) : "")."\n";
         $sign .= $parsed['query']['Expires']."\n";
 
-        $sign .= $request->getUri()->getPath().$this->getCanonicalizedParameterString(\GuzzleHttp\Psr7\parse_query($request->getUri()->getQuery()));
+        //bucket-style for google case
+        if ($bucketStyle) {
+            $buffer = $request->getUri()->getPath().$this->getCanonicalizedParameterString(\GuzzleHttp\Psr7\parse_query($request->getUri()->getQuery()));
+            $buffer = '/' . $bucket . $buffer;
+            $sign .= $buffer;
+        } else {
+            $sign .= $request->getUri()->getPath().$this->getCanonicalizedParameterString(\GuzzleHttp\Psr7\parse_query($request->getUri()->getQuery()));
+        }
 
         $parsed['query']['Signature'] = base64_encode(
             hash_hmac(
@@ -134,4 +145,3 @@ class S3SignatureV2 extends SignatureV2
         return $buffer;
     }
 }
-

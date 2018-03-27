@@ -72,9 +72,9 @@ The GitHub issues are intended for bug reports and feature requests. For help an
 1. **Sign up for AWS** – Before you begin, you need to
    sign up for an AWS account and retrieve your [AWS credentials][docs-signup].
 1. **Minimum requirements** – To run the SDK, your system will need to meet the
-   [minimum requirements][docs-requirements], including having **PHP >= 5.5**
-   compiled with the cURL extension and cURL 7.16.2+ compiled with a TLS
-   backend (e.g., NSS or OpenSSL).
+   [minimum requirements][docs-requirements], including having **PHP >= 5.5**.
+   We highly recommend having it compiled with the cURL extension and cURL
+   7.16.2+ compiled with a TLS backend (e.g., NSS or OpenSSL).
 1. **Install the SDK** – Using [Composer] is the recommended way to install the
    AWS SDK for PHP. The SDK is available via [Packagist] under the
    [`aws/aws-sdk-php`][install-packagist] package. Please see the
@@ -138,7 +138,7 @@ try {
 [sdk-forum]: https://forums.aws.amazon.com/forum.jspa?forumID=80
 [sdk-issues]: https://github.com/aws/aws-sdk-php/issues
 [sdk-license]: http://aws.amazon.com/apache2.0/
-[sdk-blog]: http://blogs.aws.amazon.com/php
+[sdk-blog]: https://aws.amazon.com/blogs/developer/category/php/
 [sdk-twitter]: https://twitter.com/awsforphp
 [sdk-sample]: http://aws.amazon.com/developers/getting-started/php
 
