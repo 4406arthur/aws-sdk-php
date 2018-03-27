@@ -304,6 +304,8 @@ function serialize(CommandInterface $command)
         );
     }
 
+    //for s3 presignURL v2.
+    $request->bucket = $command->toArray()['Bucket'];
     return $request;
 }
 
